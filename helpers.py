@@ -34,12 +34,8 @@ class BaseAction:
 
     # Поиск элемента по локатору
     def find_element_with_wait(self, locator):
-        try:
-            WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(locator))
-            return self.driver.find_element(*locator)
-        except Exception as e:
-            print(f"Не удалось найти элемент: {locator}. Ошибка: {e}")
-            return None
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(locator))
+        return self.driver.find_element(*locator)
 
     # Заполнить поле
     def fill_field(self, locator, data):
@@ -102,9 +98,6 @@ class ClickByLocator(BaseAction):
 
     # Клик на кнопку "Оформить заказ"
     def click_button_place_order(self):
-        overlay = self.find_element_with_wait(locators.Locators.disappear_modal_window)
-        if overlay:  # Проверяем, был ли найден элемент
-            self.driver.execute_script("arguments[0].style.display = 'none';", overlay)
         self.wait_clickable_and_click(locators.Locators.place_order)
 
     # Клик на крестик в окне идентификатор заказа
@@ -138,7 +131,7 @@ class TextLocator(BaseAction):
     # Получения значения "Выполнено за все время"
     def get_value_all_time(self):
         value_all_time = self.get_text_element(locators.Locators.counter_all_time)
-        return value_all_time
+        return f'0{value_all_time}'
 
     # Получения значения счетчика "Выполнено за сегодня"
     def get_value_today(self):

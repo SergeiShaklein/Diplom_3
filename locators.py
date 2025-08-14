@@ -85,7 +85,7 @@ class Locators:
     disappear_animation = (By.XPATH, '//img[@alt="loading animation"]')
 
     # Перекрывающее модальное окно
-    disappear_modal_window = (By.XPATH, "//section[contains(@class, 'Modal_modal__P3_V5')]/div[@class='Modal_modal_overlay__x2ZCr']")
+    disappear_modal_window = (By.XPATH, "//div[@class='Modal_modal_overlay__x2ZCr']")
     # (By.XPATH, "//div[@class='Modal_modal_overlay__x2ZCr']")
 
     # Сообщение Все текущие заказы готовы!

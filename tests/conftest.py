@@ -1,6 +1,5 @@
 import pytest
 from selenium import webdriver
-from seletools.actions import drag_and_drop
 from locators import Locators
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -8,10 +7,11 @@ from data import *
 
 @pytest.fixture
 def driver():
-    # driver = webdriver.Chrome()
-    driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
+    # driver = webdriver.Firefox()
     driver.maximize_window()
-    driver.get(main_site) # заходим на главную
+    driver.get(main_site)
+    driver.refresh()
     yield driver
     driver.quit()
 
