@@ -1,5 +1,4 @@
-import time
-
+import allure
 from seletools.actions import drag_and_drop
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -8,46 +7,52 @@ class BaseAction:
     def __init__(self, driver):
         self.driver = driver
 
-    # Действие клик на любом явном локаторе
-    def click_element(self, locator):
-        self.driver.find_element(*locator).click()
+    with allure.step ('Click'):
+        def click_element(self, locator):
+            self.driver.find_element(*locator).click()
 
-    # Получение текста из локатора
-    def get_text_element(self, locator):
-        time.sleep(2)
-        return self.driver.find_element(*locator).text
+    with allure.step ('Get text'):
+        def get_text_element(self, locator, timeout=10):
+            return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).text
 
-    # Ожидание элемента локатора
-    def wait_for_element(self, locator, timeout=70):
-        WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+    with allure.step ('Wait change text'):
+        def wait_for_text_change(self, locator, timeout=10):
+            element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            initial_text = element.text
+            WebDriverWait(self.driver, timeout).until(lambda d: element.text != initial_text)
+            return element.text
 
-    # Проверка, виден ли локатор на странице
-    def is_element_visible(self, locator):
-        elements = self.driver.find_elements(*locator)
-        return len(elements) > 0 and elements[0].is_displayed()
+    with allure.step ('Wait visibility element'):
+        def wait_for_element(self, locator, timeout=70):
+            WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
-    # Перетащить элемент локатора
-    def drag_and_drop_element(self, source, target):
-        drag_and_drop(self.driver, source, target)
+    with allure.step ('Wait element is displayed'):
+        def is_element_visible(self, locator):
+            elements = self.driver.find_elements(*locator)
+            return len(elements) > 0 and elements[0].is_displayed()
 
-    # Поиск элемента по локатору
-    def find_element_with_wait(self, locator):
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(locator))
-        return self.driver.find_element(*locator)
+    with allure.step ('Drag and drop'):
+        def drag_and_drop_element(self, source, target):
+            drag_and_drop(self.driver, source, target)
 
-    # Заполнить поле
-    def fill_field(self, locator, data_reg):
-        self.driver.find_element(*locator).send_keys(data_reg)
+    with allure.step ('Find element'):
+        def find_element_with_wait(self, locator):
+            WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(locator))
+            return self.driver.find_element(*locator)
 
-    # Ждем пока элемент станет кликабельным и кликаем
-    def wait_clickable_and_click(self, locator):
-        WebDriverWait(self.driver, 25).until(EC.element_to_be_clickable(locator))
-        self.driver.find_element(*locator).click()
+    with allure.step ('Fill field'):
+        def fill_field(self, locator, data_reg):
+            self.driver.find_element(*locator).send_keys(data_reg)
 
-    # Ждем пока элемент станет кликабельным
-    def wait_clickable(self, locator):
-        WebDriverWait(self.driver, 25).until(EC.element_to_be_clickable(locator))
+    with allure.step ('Wait clickable and click'):
+        def wait_clickable_and_click(self, locator):
+            WebDriverWait(self.driver, 25).until(EC.element_to_be_clickable(locator))
+            self.driver.find_element(*locator).click()
 
-    # Ждем исчезновения элемента
-    def wait_loading_to_disappear(self, locator):
-        WebDriverWait(self.driver, 25).until(EC.invisibility_of_element_located(locator))
+    with allure.step ('Wait clickable'):
+        def wait_clickable(self, locator):
+            WebDriverWait(self.driver, 25).until(EC.element_to_be_clickable(locator))
+
+    with allure.step ('Wait invisibility'):
+        def wait_loading_to_disappear(self, locator):
+            WebDriverWait(self.driver, 25).until(EC.invisibility_of_element_located(locator))

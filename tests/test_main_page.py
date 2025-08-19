@@ -1,4 +1,6 @@
 import allure
+
+import data
 from pages.main_page import MainPageAction
 from pages.order_page import OrderPageAction
 
@@ -22,7 +24,7 @@ class TestCheckMainPage:
             header_text = main_page.get_constructor_header()
 
         with allure.step('Проверяем, что видим заголовок "Соберите бургер"'):
-            assert header_text == 'Соберите бургер'
+            assert header_text == data.Headers.header_create_burger
 
 
     @allure.title ('Проверка перехода по клику на раздел «Лента заказов»')
@@ -40,7 +42,7 @@ class TestCheckMainPage:
             header_text = order_page.get_order_feed_header()
 
         with allure.step('Проверяем, что видим заголовок "Лента заказов"'):
-            assert header_text == 'Лента заказов'
+            assert header_text == data.Headers.header_order_feed
 
 
     @allure.title ('Проверка появления всплывающего окна с деталями ингредиента по клику на ингредиент')
@@ -57,8 +59,7 @@ class TestCheckMainPage:
             bun_name = main_page.get_name_crater_bun()
 
         with allure.step('Проверяем, что заголовок - "Детали ингредиента", а название - "Краторная булка N-200i"'):
-            assert header_text == "Детали ингредиента" and bun_name == "Краторная булка N-200i"
-
+            assert header_text == data.Headers.header_detail_ingredient and bun_name == data.Headers.crater_bun_name
 
 
     @allure.title ('Проверка закрытия всплывающего окна с деталями ингредиента по клику на крестик')

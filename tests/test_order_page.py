@@ -46,6 +46,7 @@ class TestCheckOrderPage:
             order_page.wait_disappear_message()
             order_for_all_time = order_page.get_value_all_time()
 
+        with allure.step('Проверяем, что изначальное количество выполенных заказов "за всё время" увеличилось и равно порядковому номеру нашего заказа'):
             assert our_order_number == order_for_all_time
 
     @allure.title('Проверка, что при создании нового заказа счётчик «Выполнено за сегодня» увеличивается')
@@ -71,7 +72,6 @@ class TestCheckOrderPage:
 
         with allure.step('Кликаем на кнопку "Конструктор"'):
             main_page.click_constructor()
-            driver.refresh()
 
         with allure.step('Перетаскиваем ингредиент "Краторная булка N-200i" в корзину'):
             main_page.move_bun_to_basket()
@@ -97,6 +97,7 @@ class TestCheckOrderPage:
         with allure.step('Определяем количество выполенных заказов сегодня"'):
             excepted_order_for_today = int(order_page.get_value_today())
 
+        with allure.step('Проверяем, что изначальное количество выполенных заказов "за сегодня" увеличилось на одну единицу'):
             assert excepted_order_for_today == last_order_for_today + 1
 
 
@@ -137,4 +138,5 @@ class TestCheckOrderPage:
         with allure.step('Определяем номер заказа в блоке «В работе»"'):
             number_in_working = order_page.get_number_in_working()
 
+        with allure.step('Проверяем, что в разделе «В работе» появился номер нашего заказа'):
             assert our_order_number == number_in_working
